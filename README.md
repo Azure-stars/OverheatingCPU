@@ -47,6 +47,24 @@ def measure_temperature():
 
 ![avatar](./asserts/LAB1.png)
 
+## 实验2
+
+### Best Temperature 与 Pupulation Size 的关系
+
+在绑定四核运行的前提下，`Best Temperature` 与每代种群数量之间的关系如下：
+
+|每代种群数量|温度
+|----|----|
+|10|54.23|
+|20|55.844|
+|30|56.382|
+|40|56.382|
+|50|56.92|
+
+绘制的关系图如下：
+
+![avatar](./asserts/LAB2-1.png)
+
 ## 实验3
 
 修改如下：
