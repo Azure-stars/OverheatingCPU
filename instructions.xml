@@ -23,6 +23,14 @@
     <instruction>
         <opcode>mov</opcode>
         <operands>
+            <operand>vreg1</operand>
+            <operand>vreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>mov</opcode>
+        <operands>
             <operand>reg1</operand>
             <operand>num0T255</operand>
         </operands>
@@ -65,6 +73,22 @@
         </operands>
     </instruction>
 
+    <instruction>
+        <opcode>cmp</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+        </operands> 
+    </instruction>
+
+    <instruction>
+        <opcode>cmp</opcode>
+        <operands>
+            <operand>vreg1</operand>
+            <operand>vreg2</operand>
+        </operands>
+    </instruction>
+
     <!-- 添加更多逻辑运算指令 -->
 
     <!-- 算术运算指令 -->
@@ -77,8 +101,9 @@
         </operands>
     </instruction>
 
+    <!-- 使用乘法器的指令 -->
     <instruction>
-        <opcode>sub</opcode>
+        <opcode>mul</opcode>
         <operands>
             <operand>reg1</operand>
             <operand>reg2</operand>
@@ -87,14 +112,6 @@
     </instruction>
 
     <!-- 添加更多算术运算指令 -->
-
-    <!-- 其他指令 -->
-    <instruction>
-        <opcode>nop</opcode>
-    </instruction>
-
-    <!-- 添加更多其他指令 -->
-
 
     <!-- 浮点指令 -->
     <instruction>
@@ -105,6 +122,16 @@
             <operand>vreg3</operand>
         </operands>
     </instruction>
+
+    <instruction>
+        <opcode>mul</opcode>
+        <operands>
+            <operand>vreg1</operand>
+            <operand>vreg2</operand>
+            <operand>vreg3</operand>
+        </operands>
+    </instruction>
+
     <!-- 添加更多浮点指令 -->
 
     <!-- 添加更多指令 -->

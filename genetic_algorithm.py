@@ -6,14 +6,14 @@ import shutil
 import xml.etree.ElementTree as ET
 
 # 遗传算法参数
-POPULATION_SIZE = 20  # 每一代种群数量
+POPULATION_SIZE = 50  # 每一代种群数量
 MAX_GENERATIONS = 20  # 最大迭代次数
-CROSSOVER_RATE = 0.8  # 交叉概率
-MUTATION_RATE = 0.1  # 变异概率
-ELITISM_RATE = 0.1  # 精英保留比例
+CROSSOVER_RATE = 0.6  # 交叉概率
+MUTATION_RATE = 0.2  # 变异概率
+ELITISM_RATE = 0.2  # 精英保留比例
 
 # 指令相关参数
-INSTRUCTION_LENGTH = 20  # 指令序列长度
+INSTRUCTION_LENGTH = 10  # 指令序列长度
 
 # 文件格式声明
 ORIGIN_INSTRUCTION_FILE = "main.s"  # 初始指令序列文件（为空）
@@ -25,6 +25,23 @@ TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温�
 
 # 不可修改Running_Time
 Running_Time = 0.2
+
+NOW_GENERAL_REGISETER = 0
+
+NOW_SIMD_REGISTER = 0
+
+# 获取一个寄存器
+# 为了保证流水线尽可能不阻塞，我们希望尽可能使用不同的寄存器，即每次获得的寄存器可以是相邻的
+def get_register():
+    global NOW_GENERAL_REGISETER
+    NOW_GENERAL_REGISETER = (NOW_GENERAL_REGISETER + 1) % 13
+    return f"r{NOW_GENERAL_REGISETER}"
+
+# 获取一个SIMD寄存器
+def get_simd_register():
+    global NOW_SIMD_REGISTER
+    NOW_SIMD_REGISTER = (NOW_SIMD_REGISTER + 1) % 8
+    return f"v{NOW_SIMD_REGISTER + 1}"
 
 
 # 加载指令格式
@@ -38,18 +55,19 @@ def load_instructions():
         instructions.append((opcode, operands))
     return instructions
 
+LAST_SIMD = False
 
 # 生成一条随机的指令
 def generate_one_instruction(instructions):
+    global LAST_SIMD
     general_register_numbers = [f"r{i}" for i in range(13)]
     simd_register_numbers = [f"v{i + 1}" for i in range(8)]
-
     instruction = random.choice(instructions)
     opcode = instruction[0]
     operands = []
     for operand in instruction[1]:
         if operand.startswith("reg"):
-            operands.append(random.choice(general_register_numbers))
+            operands.append(get_register())
         elif operand.startswith("num"):
             operand_values = operand.split("T")
             min_value = int(operand_values[0][3:])
@@ -59,9 +77,17 @@ def generate_one_instruction(instructions):
         elif operand.startswith("stack point"):
             operands.append("[r13]")
         elif operand.startswith("vreg"):
-            operands.append(random.choice(simd_register_numbers))
+            if LAST_SIMD:
+                operands.append(get_register())
+            else:
+                operands.append(get_simd_register())
         elif operand.startswith("nop"):
             pass
+
+    LAST_SIMD = False
+    for operand in operands:
+        if operand.startswith("vreg"):
+            LAST_SIMD = True
 
     return opcode, operands
 
@@ -155,11 +181,12 @@ def genetic_algorithm():
     # 记录最高的测量温度和指令序列个体
     best_fitness = float('-inf')
     best_individual = None
-
+    final_data = []
     for generation in range(MAX_GENERATIONS):
         print(f"Generation {generation + 1}:", end=" ")
 
         # 评估适应度并测量温度
+        
         fitness_scores = []
         for itemindex in range(len(population)):
             individual = population[itemindex]
@@ -172,6 +199,7 @@ def genetic_algorithm():
         # 保存当前轮的最佳指令序列文件
         max_fitness = max(fitness_scores)
         max_fitness_index = fitness_scores.index(max_fitness)
+        final_data.append(round(max_fitness, 3))
         print(f"max temperature is:{round(max_fitness, 3)}")
         shutil.copyfile(f"{TMP_FOLDER}/{generation + 1}_{max_fitness_index + 1}_{max_fitness}.s",
                         f"{SAVE_FOLDER}/generation_{generation + 1}_best_{max_fitness}.s")
@@ -208,6 +236,8 @@ def genetic_algorithm():
             new_population.append(generate_random_instructions(instructions, INSTRUCTION_LENGTH))
 
         population = new_population
+        
+    print(final_data)
 
     # 输出最佳指令序列
     print("Best Individual:")

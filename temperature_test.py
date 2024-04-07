@@ -5,14 +5,13 @@ import time
 # run in 4-6 minutes, 900 turn, every turn cost 0.2-0.4 sec
 Iteration = 900
 Running_Time = 0.2
-TEST_INSTRUCTION_FILE = ""      # 填写测试的指令片段文件名
+TEST_INSTRUCTION_FILE = "best.s"      # 填写测试的指令片段文件名
 TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温度
 temperature_list = []
 
 def measure_temperature():
     subprocess.run(["gcc", TEST_INSTRUCTION_FILE, "-o", "individual"])
-    subprocess.run('taskset -c 0 ./individual & taskset -c 1 ./individual & '
-                   'taskset -c 2 ./individual & taskset -c 3 ./individual &', shell=True)
+    subprocess.run('taskset -c 0,1,2,3 ./individual', shell=True)
     time.sleep(Running_Time)
     subprocess.run(["killall individual"], shell=True)
     temperature_output = subprocess.check_output(TEMPERATURE_COMMAND, shell=True)
