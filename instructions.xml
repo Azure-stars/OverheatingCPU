@@ -1,0 +1,111 @@
+<instructions>
+    <!-- 数据处理指令 -->
+    <instruction>
+        <opcode>adc</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+            <operand>reg3</operand>
+        </operands>
+    </instruction>
+
+    <!-- 添加更多数据处理指令 -->
+
+    <!-- 数据传输指令 -->
+    <instruction>
+        <opcode>mov</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>mov</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>num0T255</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>ldr</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>stack point</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>str</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>stack point</operand>
+        </operands>
+    </instruction>
+
+    <!-- 添加更多数据传输指令 -->
+
+    <!-- 逻辑运算指令 -->
+    <instruction>
+        <opcode>and</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+            <operand>reg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>orr</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+            <operand>reg3</operand>
+        </operands>
+    </instruction>
+
+    <!-- 添加更多逻辑运算指令 -->
+
+    <!-- 算术运算指令 -->
+    <instruction>
+        <opcode>add</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+            <operand>reg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>sub</opcode>
+        <operands>
+            <operand>reg1</operand>
+            <operand>reg2</operand>
+            <operand>reg3</operand>
+        </operands>
+    </instruction>
+
+    <!-- 添加更多算术运算指令 -->
+
+    <!-- 其他指令 -->
+    <instruction>
+        <opcode>nop</opcode>
+    </instruction>
+
+    <!-- 添加更多其他指令 -->
+
+
+    <!-- 浮点指令 -->
+    <instruction>
+        <opcode>add</opcode>
+        <operands>
+            <operand>vreg1</operand>
+            <operand>vreg2</operand>
+            <operand>vreg3</operand>
+        </operands>
+    </instruction>
+    <!-- 添加更多浮点指令 -->
+
+    <!-- 添加更多指令 -->
+</instructions>
