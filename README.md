@@ -45,11 +45,11 @@ def measure_temperature():
 
 迭代次数和温度的关系如下图：
 
-![avatar](./asserts/LAB1.png)
+![avatar](./assets/LAB1.png)
 
 ## 实验2
 
-### Best Temperature 与 Pupulation Size 的关系
+### Best Temperature 与 Population Size 的关系
 
 在绑定四核运行的前提下，`Best Temperature` 与每代种群数量之间的关系如下：
 
@@ -63,7 +63,7 @@ def measure_temperature():
 
 绘制的关系图如下：
 
-![avatar](./asserts/LAB2-1.png)
+![avatar](./assets/LAB2-1.png)
 
 ## 实验3
 
@@ -139,7 +139,7 @@ python3 genetic_algorithm.py
 
 
 
-![avatar](./asserts/LAB3.png)
+![avatar](./assets/LAB3.png)
 
 
 
@@ -174,9 +174,9 @@ INSTRUCTION_LENGTH = 10  # 指令序列长度
 # 获取一个寄存器
 # 为了保证流水线尽可能不阻塞，我们希望尽可能使用不同的寄存器，即每次获得的寄存器可以是相邻的
 def get_register():
-    global NOW_GENERAL_REGISETER
-    NOW_GENERAL_REGISETER = (NOW_GENERAL_REGISETER + 1) % 13
-    return f"r{NOW_GENERAL_REGISETER}"
+    global NOW_GENERAL_REGISTER
+    NOW_GENERAL_REGISTER = (NOW_GENERAL_REGISTER + 1) % 13
+    return f"r{NOW_GENERAL_REGISTER}"
 
 # 获取一个SIMD寄存器
 def get_simd_register():

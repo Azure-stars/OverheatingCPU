@@ -18,7 +18,7 @@ INSTRUCTION_LENGTH = 10  # 指令序列长度
 # 文件格式声明
 ORIGIN_INSTRUCTION_FILE = "main.s"  # 初始指令序列文件（为空）
 NEW_INSTRUCTION_FILE = "new.s"  # 算法迭代生成的指令序列文件
-BSET_INSTRUCTION_FILE = 'best.s'  # 最优指令序列文件
+BEST_INSTRUCTION_FILE = 'best.s'  # 最优指令序列文件
 SAVE_FOLDER = "save"  # 指令序列文件保存目录
 TMP_FOLDER = 'tmp'  # 指令序列文件临时目录
 TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温度
@@ -26,16 +26,16 @@ TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温�
 # 不可修改Running_Time
 Running_Time = 0.2
 
-NOW_GENERAL_REGISETER = 0
+NOW_GENERAL_REGISTER = 0
 
 NOW_SIMD_REGISTER = 0
 
 # 获取一个寄存器
 # 为了保证流水线尽可能不阻塞，我们希望尽可能使用不同的寄存器，即每次获得的寄存器可以是相邻的
 def get_register():
-    global NOW_GENERAL_REGISETER
-    NOW_GENERAL_REGISETER = (NOW_GENERAL_REGISETER + 1) % 13
-    return f"r{NOW_GENERAL_REGISETER}"
+    global NOW_GENERAL_REGISTER
+    NOW_GENERAL_REGISTER = (NOW_GENERAL_REGISTER + 1) % 13
+    return f"r{NOW_GENERAL_REGISTER}"
 
 # 获取一个SIMD寄存器
 def get_simd_register():
@@ -242,7 +242,7 @@ def genetic_algorithm():
     # 输出最佳指令序列
     print("Best Individual:")
     # 将最佳指令序列写入文件
-    write_best_instructions_to_file(best_individual, BSET_INSTRUCTION_FILE)
+    write_best_instructions_to_file(best_individual, BEST_INSTRUCTION_FILE)
     # 输出最高温度
     print("Best Temperature:")
     print(best_fitness)

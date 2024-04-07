@@ -18,7 +18,7 @@ for i, data in enumerate(temperature_data_sets):
 
 plt.xlabel('Generation')
 plt.ylabel('Temperature')
-plt.title('Relation between temperature and popularation size')
+plt.title('Relation between temperature and population size')
 
 legends = ['size={}'.format(10 * (i + 1)) for i in range(len(temperature_data_sets))]
 plt.legend(legends, loc='upper left')
