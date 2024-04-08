@@ -123,6 +123,49 @@ def measure_temperature():
         <operand>vreg3</operand>
     </operands>
 </instruction>
+
+<instruction>
+    <opcode>vadd.f64</opcode>
+    <operands>
+        <operand>dreg1</operand>
+        <operand>dreg2</operand>
+        <operand>dreg3</operand>
+    </operands>
+</instruction>
+
+<instruction>
+    <opcode>vsub.f64</opcode>
+    <operands>
+        <operand>dreg1</operand>
+        <operand>dreg2</operand>
+        <operand>dreg3</operand>
+    </operands>
+</instruction>
+
+<instruction>
+    <opcode>vmul.f64</opcode>
+    <operands>
+        <operand>dreg1</operand>
+        <operand>dreg2</operand>
+        <operand>dreg3</operand>
+    </operands>
+</instruction>
+
+<instruction>
+    <opcode>vcmp.f64</opcode>
+    <operands>
+        <operand>dreg1</operand>
+        <operand>dreg2</operand>
+    </operands>
+</instruction>
+
+<instruction>
+    <opcode>vcmpe.f64</opcode>
+    <operands>
+        <operand>dreg1</operand>
+        <operand>dreg2</operand>
+    </operands>
+</instruction>
 ```
 
 运行参数修改为：
