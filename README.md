@@ -63,7 +63,7 @@ def measure_temperature():
 
 **每代种群数量**
 
-![Population Size](./assets/LAB2-1.png)
+![Population Size](./assets/LAB2-POPULARATION.png)
 
 **迭代次数**
 

@@ -1,10 +1,10 @@
-	cmp	r5 ,r6
-	mov	v5 ,v6
-	mov	r8 ,r9
-	ldr	r10 ,[r13]
-	mov	r5 ,#232
-	mov	r5 ,r6
-	str	r1 ,[r13]
-	adc	r9 ,r10 ,r11
-	add	v4 ,v5 ,v6
-	cmp	r12 ,r0
+	mov	r7 ,r2
+	vmul.f64	d4 ,d4 ,d15
+	mov	r12 ,#154
+	mov	r8 ,r0
+	vmul.f64	d3 ,d2 ,d11
+	ldr	r11 ,[r13]
+	add	v4 ,v3 ,v4
+	add	r0 ,r6 ,r7
+	cmp	v3 ,v5
+	ldr	r9 ,[r13]

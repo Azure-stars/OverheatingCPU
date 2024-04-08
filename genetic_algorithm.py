@@ -39,23 +39,6 @@ TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温�
 # 不可修改Running_Time
 Running_Time = 0.2
 
-NOW_GENERAL_REGISTER = 0
-
-NOW_SIMD_REGISTER = 0
-
-# 获取一个寄存器
-# 为了保证流水线尽可能不阻塞，我们希望尽可能使用不同的寄存器，即每次获得的寄存器可以是相邻的
-def get_register():
-    global NOW_GENERAL_REGISTER
-    NOW_GENERAL_REGISTER = (NOW_GENERAL_REGISTER + 1) % 13
-    return f"r{NOW_GENERAL_REGISTER}"
-
-# 获取一个SIMD寄存器
-def get_simd_register():
-    global NOW_SIMD_REGISTER
-    NOW_SIMD_REGISTER = (NOW_SIMD_REGISTER + 1) % 8
-    return f"v{NOW_SIMD_REGISTER + 1}"
-
 
 # 加载指令格式
 def load_instructions():
@@ -68,19 +51,18 @@ def load_instructions():
         instructions.append((opcode, operands))
     return instructions
 
-LAST_SIMD = False
-
 # 生成一条随机的指令
 def generate_one_instruction(instructions):
-    global LAST_SIMD
     general_register_numbers = [f"r{i}" for i in range(13)]
     simd_register_numbers = [f"v{i + 1}" for i in range(8)]
+    float_register_numbers = [f"d{i}" for i in range(16)]
+
     instruction = random.choice(instructions)
     opcode = instruction[0]
     operands = []
     for operand in instruction[1]:
         if operand.startswith("reg"):
-            operands.append(get_register())
+            operands.append(random.choice(general_register_numbers))
         elif operand.startswith("num"):
             operand_values = operand.split("T")
             min_value = int(operand_values[0][3:])
@@ -90,20 +72,13 @@ def generate_one_instruction(instructions):
         elif operand.startswith("stack point"):
             operands.append("[r13]")
         elif operand.startswith("vreg"):
-            if LAST_SIMD:
-                operands.append(get_register())
-            else:
-                operands.append(get_simd_register())
+            operands.append(random.choice(simd_register_numbers))
+        elif operand.startswith("dreg"):
+            operands.append(random.choice(float_register_numbers))
         elif operand.startswith("nop"):
             pass
 
-    LAST_SIMD = False
-    for operand in operands:
-        if operand.startswith("vreg"):
-            LAST_SIMD = True
-
     return opcode, operands
-
 
 # 生成随机的指令序列
 def generate_random_instructions(instructions, length):

@@ -3,9 +3,9 @@ import heapq
 import time
 
 # run in 2 minutes, 600 turn, every turn cost 0.2-0.4 sec
-Iteration = 900
+Iteration = 600
 Running_Time = 0.2
-TEST_INSTRUCTION_FILE = "example5_modified.s"  # 修改所要测试的目标文件
+TEST_INSTRUCTION_FILE = "example4.s"  # 修改所要测试的目标文件
 TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温度
 temperature_list = []
 

@@ -1,7 +1,6 @@
 ## 这个文件是用于画图的文件，大家可以复用
 
 import argparse
-from argparse import FileType
 import json
 from pathlib import Path
 
