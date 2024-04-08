@@ -1,6 +1,6 @@
 # 好烧好烧的 CPU 🥵🥵🥵
 
-## 实验0 
+## 实验 0 
 
 已知在某一天不同时间点测量 CPU 温度会有明显区别，建议放在同一时间段进行测试．
 
@@ -14,9 +14,9 @@ $ cat /sys/class/thermal/thermal_zone0/temp # 多次检查 CPU 温度，直到�
 
 
 
-## 实验1
+## 实验 1
 
-运行指令`taskset`来决定在哪个 CPU 核上运行。因此我们只需要修改`genetic_algorithm.py`中`measure_temperature`函数的运行指令即可。
+运行指令 `taskset` 来决定在哪个 CPU 核上运行。因此我们只需要修改 `genetic_algorithm.py` 中 `measure_temperature` 函数的运行指令即可。
 
 如单核运行时，修改函数为：
 
@@ -35,37 +35,45 @@ def measure_temperature():
 
 
 
-为了防止连续运行带来的温度误差，每次运行完任务之后让服务器等待 5min 以上再进行下一个测试
+为了防止连续运行带来的温度误差，每次运行完任务之后让服务器等待 5 min 以上再进行下一个测试。
 
-`Best Temperature`与运行核数目的关系如下
+`Best Temperature` 与运行核数目的关系如下：
 
-|                  | 1      | 2      | 3     | 4      |
-| ---------------- | ------ | ------ | ----- | ------ |
-| Best Temperature | 44.546 | 46.698 | 48.85 | 52.616 |
+|     | 1 个核 | 2 个核 | 3 个核 | 4 个核 |
+| --- | ------ | ------ | ----- | ------ |
+| 温度 | 44.546 | 46.698 | 48.85 | 52.616 |
 
 迭代次数和温度的关系如下图：
 
 ![avatar](./assets/LAB1.png)
 
-## 实验2
+## 实验 2
 
-### Best Temperature 与 Population Size 的关系
+在绑定四核运行的前提下，不同参数下的处理器温度情况如下表所示：
 
-在绑定四核运行的前提下，`Best Temperature` 与每代种群数量之间的关系如下：
+| 每代种群数量 | 温度    | 迭代次数 | 温度   | 指令长度 | 温度   |
+|------------|--------|--------|--------|--------|--------|
+|         10 | 54.230 |     20 | 55.844 |     10 | 58.534 |
+|         20 | 55.844 |     40 | 57.996 |     20 | 56.920 |
+|         30 | 56.382 |     60 | 57.996 |     30 | 56.920 |
+|         40 | 56.382 |     80 | 59.072 |     40 | 57.458 |
+|         50 | 56.920 |    100 | 59.610 |     50 | 57.458 |
 
-|每代种群数量|温度
-|----|----|
-|10|54.23|
-|20|55.844|
-|30|56.382|
-|40|56.382|
-|50|56.92|
+改变不同参数时，遗传算法运行时温度迭代趋势图如下：
 
-绘制的关系图如下：
+**每代种群数量**
 
-![avatar](./assets/LAB2-1.png)
+![Population Size](./assets/LAB2-1.png)
 
-## 实验3
+**迭代次数**
+
+![Max Generations](./assets/LAB2-MAX-GENERATIONS.png)
+
+**指令长度**
+
+![Instruction Length](./assets/LAB2-INSTRUCTION-LENGTH.png)
+
+## 实验 3
 
 修改如下：
 
@@ -143,9 +151,9 @@ python3 genetic_algorithm.py
 
 
 
-## 实验4
+## 实验 4
 
-在足够冷却了 CPU 的情况下测量`example4.s`的运行温度为`53.154℃` 。
+在足够冷却了 CPU 的情况下测量 `example4.s` 的运行温度为 53.154 ℃。
 
 
 
@@ -178,7 +186,7 @@ def get_register():
     NOW_GENERAL_REGISTER = (NOW_GENERAL_REGISTER + 1) % 13
     return f"r{NOW_GENERAL_REGISTER}"
 
-# 获取一个SIMD寄存器
+# 获取一个 SIMD 寄存器
 def get_simd_register():
     global NOW_SIMD_REGISTER
     NOW_SIMD_REGISTER = (NOW_SIMD_REGISTER + 1) % 8
@@ -187,7 +195,7 @@ def get_simd_register():
 
 得到如下指令：
 
-```shell
+```arm
 and	r2 ,r3 ,r4
 mul	r5 ,r6 ,r7
 mov	r8 ,r9
@@ -202,7 +210,7 @@ add	v7 ,v8 ,v1
 
 观察之后，感觉还可以进行优化，因此手动修改构造，得到
 
-```sh
+```arm
 and	r2 ,r3 ,r4
 mul	v5 ,v6 ,v7
 ldr r8, [r13]
@@ -217,4 +225,4 @@ str r10, [r13]
 
 
 
-初始化之后，进行测试，运行`temperature_test.py`，得到结果为 `55.844℃`。
+初始化之后，进行测试，运行 `temperature_test.py`，得到结果为 55.844 ℃。

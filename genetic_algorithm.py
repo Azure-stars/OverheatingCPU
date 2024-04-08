@@ -1,3 +1,5 @@
+from argparse import ArgumentParser
+import json
 import random
 import os
 import subprocess
@@ -5,15 +7,26 @@ import time
 import shutil
 import xml.etree.ElementTree as ET
 
+parser = ArgumentParser()
+parser.add_argument('--population_size', type=int, default=20)
+parser.add_argument('--max_generations', type=int, default=20)
+parser.add_argument('--crossover_rate', type=float, default=0.8)
+parser.add_argument('--mutation_rate', type=float, default=0.1)
+parser.add_argument('--elitism_rate', type=float, default=0.1)
+parser.add_argument('--instruction_length', type=int, default=20)
+parser.add_argument('--log', type=str, default=None)
+
+args = parser.parse_args()
+
 # 遗传算法参数
-POPULATION_SIZE = 50  # 每一代种群数量
-MAX_GENERATIONS = 20  # 最大迭代次数
-CROSSOVER_RATE = 0.6  # 交叉概率
-MUTATION_RATE = 0.2  # 变异概率
-ELITISM_RATE = 0.2  # 精英保留比例
+POPULATION_SIZE = args.population_size  # 每一代种群数量
+MAX_GENERATIONS = args.max_generations  # 最大迭代次数
+CROSSOVER_RATE = args.crossover_rate  # 交叉概率
+MUTATION_RATE = args.mutation_rate  # 变异概率
+ELITISM_RATE = args.elitism_rate  # 精英保留比例
 
 # 指令相关参数
-INSTRUCTION_LENGTH = 10  # 指令序列长度
+INSTRUCTION_LENGTH = args.instruction_length  # 指令序列长度
 
 # 文件格式声明
 ORIGIN_INSTRUCTION_FILE = "main.s"  # 初始指令序列文件（为空）
@@ -182,8 +195,11 @@ def genetic_algorithm():
     best_fitness = float('-inf')
     best_individual = None
     final_data = []
+
+    max_fitnesses = []
+
     for generation in range(MAX_GENERATIONS):
-        print(f"Generation {generation + 1}:", end=" ")
+        print(f"Generation {generation + 1}")
 
         # 评估适应度并测量温度
         
@@ -205,6 +221,7 @@ def genetic_algorithm():
                         f"{SAVE_FOLDER}/generation_{generation + 1}_best_{max_fitness}.s")
 
         # 更新最佳个体
+        max_fitnesses.append(max_fitness)
         if max_fitness > best_fitness:
             best_fitness = max_fitness
             best_individual = population[fitness_scores.index(max_fitness)]
@@ -247,6 +264,12 @@ def genetic_algorithm():
     print("Best Temperature:")
     print(best_fitness)
 
+    return max_fitnesses
+
 
 # 运行遗传算法
-genetic_algorithm()
+max_fitnesses = genetic_algorithm()
+
+if args.log:
+    with open(args.log, 'w') as f:
+        json.dump(max_fitnesses, f)
