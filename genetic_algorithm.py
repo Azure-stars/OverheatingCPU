@@ -8,8 +8,8 @@ import xml.etree.ElementTree as ET
 # 遗传算法参数
 POPULATION_SIZE = 50  # 每一代种群数量
 MAX_GENERATIONS = 20  # 最大迭代次数
-CROSSOVER_RATE = 0.6  # 交叉概率
-MUTATION_RATE = 0.2  # 变异概率
+CROSSOVER_RATE = 0.7  # 交叉概率
+MUTATION_RATE = 0.1  # 变异概率
 ELITISM_RATE = 0.2  # 精英保留比例
 
 # 指令相关参数
@@ -30,6 +30,8 @@ NOW_GENERAL_REGISTER = 0
 
 NOW_SIMD_REGISTER = 0
 
+NOW_VECTOR_REGISTER = 0
+
 # 获取一个寄存器
 # 为了保证流水线尽可能不阻塞，我们希望尽可能使用不同的寄存器，即每次获得的寄存器可以是相邻的
 def get_register():
@@ -42,6 +44,11 @@ def get_simd_register():
     global NOW_SIMD_REGISTER
     NOW_SIMD_REGISTER = (NOW_SIMD_REGISTER + 1) % 8
     return f"v{NOW_SIMD_REGISTER + 1}"
+
+def get_vector_register():
+    global NOW_VECTOR_REGISTER
+    NOW_VECTOR_REGISTER = (NOW_VECTOR_REGISTER + 1) % 8
+    return f"d{NOW_VECTOR_REGISTER + 1}"
 
 
 # 加载指令格式
@@ -81,6 +88,8 @@ def generate_one_instruction(instructions):
                 operands.append(get_register())
             else:
                 operands.append(get_simd_register())
+        elif operand.startswith("dreg"):
+            operands.append(get_vector_register())
         elif operand.startswith("nop"):
             pass
 
