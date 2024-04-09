@@ -1,11 +1,16 @@
+import argparse
 import subprocess
 import heapq
 import time
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--neon', action='store_true', default=False)
+args = parser.parse_args()
+
 # run in 4-6 minutes, 900 turn, every turn cost 0.2-0.4 sec
 Iteration = 900
 Running_Time = 0.2
-OLD_FILE = "main.s"
+OLD_FILE = "main_neon.s" if args.neon else "main.s"
 BEST_FILE = "best.s"
 TEST_INSTRUCTION_FILE = "main_best.s"      # 填写测试的指令片段文件名
 TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温度
@@ -48,6 +53,7 @@ write_instructions_to_file(BEST_FILE, OLD_FILE, TEST_INSTRUCTION_FILE)
 
 for i in range(Iteration):
     temperature = measure_temperature()
+    print(i, temperature)
     temperature_list.append(temperature)
 
 # 挑选20个较高的温度记录值，取平均

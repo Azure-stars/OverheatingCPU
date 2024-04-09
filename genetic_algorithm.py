@@ -8,6 +8,7 @@ import shutil
 import xml.etree.ElementTree as ET
 
 parser = ArgumentParser()
+parser.add_argument('--neon', action='store_true', default=False)
 parser.add_argument('--population_size', type=int, default=20)
 parser.add_argument('--max_generations', type=int, default=20)
 parser.add_argument('--crossover_rate', type=float, default=0.8)
@@ -29,7 +30,7 @@ ELITISM_RATE = args.elitism_rate  # 精英保留比例
 INSTRUCTION_LENGTH = args.instruction_length  # 指令序列长度
 
 # 文件格式声明
-ORIGIN_INSTRUCTION_FILE = "main.s"  # 初始指令序列文件（为空）
+ORIGIN_INSTRUCTION_FILE = "main_neon.s" if args.neon else "main.s"  # 初始指令序列文件（为空）
 NEW_INSTRUCTION_FILE = "new.s"  # 算法迭代生成的指令序列文件
 BEST_INSTRUCTION_FILE = 'best.s'  # 最优指令序列文件
 SAVE_FOLDER = "save"  # 指令序列文件保存目录
@@ -54,8 +55,8 @@ def load_instructions():
 # 生成一条随机的指令
 def generate_one_instruction(instructions):
     general_register_numbers = [f"r{i}" for i in range(13)]
-    simd_register_numbers = [f"v{i + 1}" for i in range(8)]
-    float_register_numbers = [f"d{i}" for i in range(16)]
+    double_register_numbers = [f"d{i}" for i in range(32)]
+    quad_register_numbers = [f"q{i}" for i in range(16)]
 
     instruction = random.choice(instructions)
     opcode = instruction[0]
@@ -71,10 +72,10 @@ def generate_one_instruction(instructions):
             operands.append(f"#{operand_value}")
         elif operand.startswith("stack point"):
             operands.append("[r13]")
-        elif operand.startswith("vreg"):
-            operands.append(random.choice(simd_register_numbers))
         elif operand.startswith("dreg"):
-            operands.append(random.choice(float_register_numbers))
+            operands.append(random.choice(double_register_numbers))
+        elif operand.startswith("qreg"):
+            operands.append(random.choice(quad_register_numbers))
         elif operand.startswith("nop"):
             pass
 

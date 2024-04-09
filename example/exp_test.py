@@ -1,11 +1,16 @@
+import argparse
 import subprocess
 import heapq
 import time
 
+parser = argparse.ArgumentParser()
+parser.add_argument('file', type=str)
+args = parser.parse_args()
+
 # run in 2 minutes, 600 turn, every turn cost 0.2-0.4 sec
 Iteration = 600
 Running_Time = 0.2
-TEST_INSTRUCTION_FILE = "example4.s"  # 修改所要测试的目标文件
+TEST_INSTRUCTION_FILE = args.file  # 修改所要测试的目标文件
 TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温度
 temperature_list = []
 

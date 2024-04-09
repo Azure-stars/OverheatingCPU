@@ -23,14 +23,6 @@
     <instruction>
         <opcode>mov</opcode>
         <operands>
-            <operand>vreg1</operand>
-            <operand>vreg2</operand>
-        </operands>
-    </instruction>
-
-    <instruction>
-        <opcode>mov</opcode>
-        <operands>
             <operand>reg1</operand>
             <operand>num0T255</operand>
         </operands>
@@ -81,14 +73,6 @@
         </operands> 
     </instruction>
 
-    <instruction>
-        <opcode>cmp</opcode>
-        <operands>
-            <operand>vreg1</operand>
-            <operand>vreg2</operand>
-        </operands>
-    </instruction>
-
     <!-- 添加更多逻辑运算指令 -->
 
     <!-- 算术运算指令 -->
@@ -115,26 +99,53 @@
 
     <!-- 浮点指令 -->
     <instruction>
-        <opcode>add</opcode>
+        <opcode>vadd.f</opcode>
         <operands>
-            <operand>vreg1</operand>
-            <operand>vreg2</operand>
-            <operand>vreg3</operand>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
         </operands>
     </instruction>
 
     <instruction>
-        <opcode>mul</opcode>
+        <opcode>vadd.d</opcode>
         <operands>
-            <operand>vreg1</operand>
-            <operand>vreg2</operand>
-            <operand>vreg3</operand>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vmul.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vmul.d</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
         </operands>
     </instruction>
 
     <!-- 添加更多浮点指令 -->
     <instruction>
-        <opcode>vadd.f64</opcode>
+        <opcode>vsub.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+    
+    <instruction>
+        <opcode>vsub.d</opcode>
         <operands>
             <operand>dreg1</operand>
             <operand>dreg2</operand>
@@ -143,7 +154,7 @@
     </instruction>
 
     <instruction>
-        <opcode>vsub.f64</opcode>
+        <opcode>vdiv.d</opcode>
         <operands>
             <operand>dreg1</operand>
             <operand>dreg2</operand>
@@ -152,28 +163,268 @@
     </instruction>
 
     <instruction>
-        <opcode>vmul.f64</opcode>
-        <operands>
-            <operand>dreg1</operand>
-            <operand>dreg2</operand>
-            <operand>dreg3</operand>
-        </operands>
-    </instruction>
-
-    <instruction>
-        <opcode>vcmp.f64</opcode>
+        <opcode>vcmp.d</opcode>
         <operands>
             <operand>dreg1</operand>
             <operand>dreg2</operand>
         </operands>
     </instruction>
 
-    <instruction>
-        <opcode>vcmpe.f64</opcode>
-        <operands>
-            <operand>dreg1</operand>
-            <operand>dreg2</operand>
-        </operands>
-    </instruction>
     <!-- 添加更多指令 -->
+
+    <instruction>
+        <opcode>vqadd.s64</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vmov</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vmov</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vbsl.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vbsl.d</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
+        </operands>
+    </instruction>
+    
+    <instruction>
+        <opcode>vcge.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vmax.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vaba.u32</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vaba.u32</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vmlsq.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vpmin.f</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vqrdmulh.s32</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vfma.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vfma.d</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vfnma.d</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+            <operand>dreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vacgt.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vrecpe.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vrsqrts.f</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>qreg3</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vcvt.s32.f32</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>num1T32</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vcvt.f32.s32</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+            <operand>num1T32</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vrev64.8</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vrev64.16</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vrev64.32</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vzip.8</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vzip.16</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vuzp.8</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vuzp.16</opcode>
+        <operands>
+            <operand>qreg1</operand>
+            <operand>qreg2</operand>
+        </operands>
+    </instruction>
+    
+    <instruction>
+        <opcode>vsqrt.d</opcode>
+        <operands>
+            <operand>dreg1</operand>
+            <operand>dreg2</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vstmia.64 r13, {d0-d15}</opcode>
+        <operands>
+            <operand>nop</operand>
+        </operands>
+    </instruction>
+
+    <instruction>
+        <opcode>vldmia.64 r13, {d0-d15}</opcode>
+        <operands>
+            <operand>nop</operand>
+        </operands>
+    </instruction>
+
 </instructions>
