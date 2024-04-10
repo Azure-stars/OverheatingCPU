@@ -1,4 +1,6 @@
-# 好烧好烧的 CPU 🥵🥵🥵
+# 《指令序列构造实验》 实验报告
+
+小组成员：郑友捷、陈墨涵、王博文、魏辰轩
 
 ## 实验 0
 
@@ -427,3 +429,54 @@ orr      r3 ,r11 ,r10
 可以看到，尽管初始几轮迭代的温度相较于之前的版本较高，但添加的更多指令使得遗传算法需要耗费更多轮迭代才能够找到温度较高的指令序列。
 
 我们注意到，最后选取的浮点指令中采用的都是 `vadd`、`vsub`、`vaba` (Vector Absolute Difference and Accumulate)、`vcge` (Vector Compare Greater than or Equal)、`vbsl` (Vector Bitwise Select)、`vzip` (Vector Zip) 等运算较为简单的加减、比较和逻辑运算指令，我们添加的较复杂的指令如 `vmul`、`vdiv`、`vqrdmulh` (Vector Saturating Rounding Doubling Multiply Returning High Half)、`vrsqrts` (Vector Reciprocal Square Root Step) 等都在遗传算法中被淘汰了，而向量访存指令 `vldm` (Extension Register Load Multiple)、`vstm` (Extension Register Store Multiple) 也没有被使用。我们推测这是因为较复杂的运算需要占用较长的周期，使得流水线被阻塞，功能部件没有得到充分利用。
+
+### 爬山算法/模拟退火
+
+除了遗传算法之外，我们还尝试了使用传统的爬山算法和模拟退火进行指令序列的构造，内容详见目录下的：`hill-clibing.py` 和 `simulated-annealing.py`。
+
+具体思路为每次对代码序列进行部分修改：先随机修改一条指令，然后重复三次以 $0.4$ 的概率随机选择一条指令进行修改，在保证代码序列的变化尽可能连续的基础上避免出现仅单条指令无法产生改进的情况。
+
+爬山算法生成的指令序列如下：
+
+```arm
+and       r3 ,r12 ,r12
+mul       v5 ,v3 ,v4
+vcmp.f64  d9 ,d5
+cmp       r9 ,r6
+cmp       v4 ,v8
+mul       r3 ,r3 ,r6
+vcmpe.f64 d3 ,d14
+mov       r5 ,r2
+mov       r6 ,#207
+ldr       r1 ,[r13]
+str       r8 ,[r13]
+vadd.f64  d14 ,d1 ,d3
+str       r8 ,[r13]
+cmp       r7 ,r1
+mov       r3 ,#161
+vsub.f64  d13 ,d11 ,d9
+cmp       r3 ,r11
+adc       r10 ,r2 ,r3
+orr       r12 ,r3 ,r4
+mul       r4 ,r7 ,r11
+```
+通过 `temperature_test.py` 进行测试，得到最高温度为 **59.175 ℃**。
+
+爬山算法温度迭代趋势图如下：
+
+![Temperature Trend on Hill-Climbing Algorithm](assets/LAB4-HILL-CLIBING.png)
+
+而模拟退火算法在迭代过程中无法在一个小时内超过 baseline 的结果，在此不作展示。
+
+对于这个结果，我们做出如下推测：能够达到更高 cpu 温度的指令序列一定是由大量“最优子结构”组成，即由若干不存在流水线阻塞且各个功能都被充分利用的代码片段组成；对一个指令序列进行部分修改很大概率会让局部出现流水线阻塞或者一段时间内部分功能部件停转的情况，而要基于这个修改再次生成一个新的较好代码片段需要次数过多的尝试。爬山算法和模拟退火都可以看成是在代码序列空间的邻域上进行搜索，而对于“处理器温度”这一函数在该空间上的性质非常差：
+
+1. 过于不平滑：爬山算法很容易陷入某个极值点难以移动。
+2. 低效指令的影响过高：模拟退火接受一次较劣解的负面影响过大，更难发现更优解。
+3. 温度测试结果离散化：温度测试只能获取有限的结果，进一步影响评估函数的光滑性。
+
+通过爬山算法和模拟退火的失败尝试，也可以反过来知道为什么遗传算法会被选择用于本次实验：
+
+1. 遗传算法组合代码片段，这使得大部分的较优代码片段不会被破坏。
+2. 遗传算法对群体的筛选会很快清除掉低效指令，将答案框定在一个更精确的指令集中。
+3. 遗传算法会保留大量的代码片段，这使得温度测试结果离散和不稳定的问题对迭代过程的影响更小。
+

@@ -1,45 +1,24 @@
 ## 这个文件是用于画图的文件，大家可以复用
 
-import argparse
-import json
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 
-def check_dir(path: str):
-    if not Path(path).is_dir():
-        raise NotADirectoryError(path)
-    else:
-        return Path(path)
+temperature_data_sets = [
+    [52.508,54.876,56.92,57.377,58.238,59.26,59.96,59.96,60.175,60.175,60.175,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.202,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.229,60.282,60.282,60.282,60.282,60.282,60.282,60.309,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.39,60.417,60.417,60.417,60.417,60.417,60.417,60.417,60.417,60.417,60.417],
+]
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--input', type=check_dir)
-parser.add_argument('--output', type=str)
-parser.add_argument('--title', type=str)
-parser.add_argument('--legend', type=str, default=None)
-args = parser.parse_args()
+n = len(temperature_data_sets[0])
+xdata = list(range(1, n + 1))
 
-input_dir: Path = args.input
 
-temperature_data_sets = []
-files = sorted(list(input_dir.iterdir()), key=lambda x: int(x.stem))
-for file in files:
-    with file.open() as f:
-        temperature_data_sets.append(json.load(f))
-
-plt.figure(dpi=600)
 colors = ['blue', 'green', 'red', 'orange', 'purple']
 for i, data in enumerate(temperature_data_sets):
-    xdata = range(1, len(data) + 1)
-    plt.plot(xdata, data, marker='o', linestyle='-', color=colors[i])
+    plt.plot(xdata, data,  linestyle='-', color=colors[i])
 
 plt.xlabel('Generation')
 plt.ylabel('Temperature')
-plt.title(args.title)
+plt.title('Temperature Trend on Hill-Climbing Algorithm')
 
-if args.legend:
-    legends = [f'{args.legend}={file.stem}' for file in files]
-    plt.legend(legends, loc='lower right')
-plt.xticks(range(0, max(map(len, temperature_data_sets)) + 1, 5))
+legends = ['size={}'.format(10 * (i + 1)) for i in range(len(temperature_data_sets))]
+plt.xticks([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 128])
 plt.grid(True)
-plt.savefig(args.output)
+plt.savefig("./assets/LAB4-HILL-CLIBING.png")
