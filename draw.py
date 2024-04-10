@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--input', type=check_dir)
 parser.add_argument('--output', type=str)
 parser.add_argument('--title', type=str)
-parser.add_argument('--legend', type=str)
+parser.add_argument('--legend', type=str, default=None)
 args = parser.parse_args()
 
 input_dir: Path = args.input
@@ -37,8 +37,9 @@ plt.xlabel('Generation')
 plt.ylabel('Temperature')
 plt.title(args.title)
 
-legends = [f'{args.legend}={file.stem}' for file in files]
-plt.legend(legends, loc='lower right')
+if args.legend:
+    legends = [f'{args.legend}={file.stem}' for file in files]
+    plt.legend(legends, loc='lower right')
 plt.xticks(range(0, max(map(len, temperature_data_sets)) + 1, 5))
 plt.grid(True)
 plt.savefig(args.output)
