@@ -1,10 +1,10 @@
-	mov	r7 ,r2
-	vmul.f64	d4 ,d4 ,d15
-	mov	r12 ,#154
-	mov	r8 ,r0
-	vmul.f64	d3 ,d2 ,d11
-	ldr	r11 ,[r13]
-	add	v4 ,v3 ,v4
-	add	r0 ,r6 ,r7
-	cmp	v3 ,v5
-	ldr	r9 ,[r13]
+	adc	r2 ,r11 ,r11
+	vsub.d	d3 ,d31 ,d24
+	vcge.f	q3 ,q11 ,q0
+	str	r0 ,[r13]
+	vaba.u32	q12 ,q11 ,q5
+	adc	r9 ,r1 ,r4
+	vadd.f	q3 ,q4 ,q15
+	vbsl.f	q11 ,q8 ,q14
+	vzip.8	q9 ,q0
+	orr	r3 ,r11 ,r10

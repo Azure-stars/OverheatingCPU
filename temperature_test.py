@@ -4,6 +4,7 @@ import heapq
 import time
 
 parser = argparse.ArgumentParser()
+parser.add_argument('file', type=str)
 parser.add_argument('--neon', action='store_true', default=False)
 args = parser.parse_args()
 
@@ -11,8 +12,8 @@ args = parser.parse_args()
 Iteration = 900
 Running_Time = 0.2
 OLD_FILE = "main_neon.s" if args.neon else "main.s"
-BEST_FILE = "best.s"
-TEST_INSTRUCTION_FILE = "main_best.s"      # 填写测试的指令片段文件名
+BEST_FILE = args.file
+TEST_INSTRUCTION_FILE = "main_best_test.s"      # 填写测试的指令片段文件名
 TEMPERATURE_COMMAND = "cat /sys/class/thermal/thermal_zone0/temp"  # 读取温度
 temperature_list = []
 
